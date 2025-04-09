@@ -35,6 +35,7 @@ class QuestionBoard():
             stdscr.refresh()
     
     def awaitResponse(self, stdscr):
+        curses.flushinp() #prevent buffering input
         self.selectedResponse = None
 
         while self.selectedResponse not in ["1", "2", "3", "4"]:
@@ -60,7 +61,7 @@ class QuestionBoard():
             stdscr.attron(self.correct) #add sigma point here
         else:
             stdscr.attron(self.incorrect) #add unc point here
-        time.sleep(3)
+        time.sleep(2)
         self.instantSelectionRedraw(stdscr, int(self.selectedResponse))
         time.sleep(1)
         stdscr.move(0, 0)
@@ -76,11 +77,11 @@ class QuestionBoard():
             time.sleep(0.03)
 
     def displayScore(self, stdscr, sigma, unc):
-        self.print_big_text(stdscr, 5, 10, sigma_text)
+        self.print_big_text(stdscr, 5, 15, sigma_text)
         self.print_big_text(stdscr, 5, 80, asciiNumbers[int(str(sigma)[0])])
         if sigma > 9:
             self.print_big_text(stdscr, 5, 87, asciiNumbers[int(str(sigma)[1])])
-        self.print_big_text(stdscr, 16, 13, unc_text)
+        self.print_big_text(stdscr, 16, 18, unc_text)
         self.print_big_text(stdscr, 16, 80, asciiNumbers[int(str(unc)[0])])
         stdscr.refresh()
 
