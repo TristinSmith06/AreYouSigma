@@ -55,12 +55,14 @@ class QuestionBoard():
         stdscr.addstr(begin_y + 2, 23, self.questionSet.responses[selection-1])
         stdscr.refresh()
 
-    def verifyResponse(self, stdscr):
+    def verifyResponse(self, stdscr, gamestats):
         self.instantSelectionRedraw(stdscr, int(self.selectedResponse))
         if self.selectedResponse == str(self.questionSet.correct):
             stdscr.attron(self.correct) #add sigma point here
+            gamestats.addPoint(0)
         else:
             stdscr.attron(self.incorrect) #add unc point here
+            gamestats.addPoint(1)
         time.sleep(2)
         self.instantSelectionRedraw(stdscr, int(self.selectedResponse))
         time.sleep(1)
