@@ -5,7 +5,9 @@ import random
 
 def gameLoop(stdscr, board, questions, gamestats):
     testQuestion = QuestionSet("Who is the most Skibidi?", "CaseOh", "Kai Cenat", "Baby Gronk", "The Jonkler", 2)
-    board.assignQuestionSet(questions.questions_list[random.randint(0, len(questions.questions_list) - 1)])
+    choice = random.randint(0, len(questions.questions_list) - 1)
+    board.assignQuestionSet(questions.questions_list[choice])
+    questions.questions_list.pop(choice)
     board.displayQuestionSet(stdscr)
 
     board.awaitResponse(stdscr)
@@ -13,7 +15,7 @@ def gameLoop(stdscr, board, questions, gamestats):
     board.transition(stdscr)
     
     board.displayScore(stdscr, gamestats.sigma_points, gamestats.unc_points)
-    time.sleep(3)
+    time.sleep(2.8)
     board.transition(stdscr)
     stdscr.attron(board.default)
 
@@ -27,14 +29,11 @@ def main(stdscr):
     stdscr.refresh()
 
     questions = Questions()
-    
     board = QuestionBoard(stdscr)
-
     gamestats = Gamestats()
 
 
-
-    for i in range(3):
+    while not gamestats.isGameOver():
         gameLoop(stdscr, board, questions, gamestats)
 
 
