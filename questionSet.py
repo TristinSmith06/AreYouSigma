@@ -24,4 +24,4 @@ class Questions():
                     if len(row) == 0:
                         break
                     self.questions_list.append(QuestionSet(row[0], row[1], row[2], row[3], row[4], int(row[5])))
-                    line += 1
+                    line += 1 #extract data from csv and create list of questionset objects

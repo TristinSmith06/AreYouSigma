@@ -20,13 +20,13 @@ class QuestionBoard():
         self.questionSet = None
         self.selectedResponse = ""
 
-        self.separation_distance = 5
+        self.separation_distance = 5 #numbers to specify layout of the question board y coordinate
         self.start = 2
 
-    def assignQuestionSet(self, qs):
+    def assignQuestionSet(self, qs): #aggregation of questionset class
         self.questionSet = qs
 
-    def gradual_print(self, y, x, text, stdscr):
+    def gradual_print(self, y, x, text, stdscr): #print text over time with delay
         index = 0
         for i in text:
             stdscr.addstr(y, x + index, i)
@@ -38,10 +38,10 @@ class QuestionBoard():
         curses.flushinp() #prevent buffering input
         self.selectedResponse = None
 
-        while self.selectedResponse not in ["1", "2", "3", "4"]:
+        while self.selectedResponse not in ["1", "2", "3", "4"]: #ignore keys that aren't 1234 for input
             self.selectedResponse = stdscr.getkey()
     
-    def instantSelectionRedraw(self, stdscr, selection):
+    def instantSelectionRedraw(self, stdscr, selection): #show only question and selected answer
         stdscr.clear()
         rectangle(stdscr, 1, 4, 5, 114)
         stdscr.addstr(3, 8, self.questionSet.question)
@@ -55,7 +55,7 @@ class QuestionBoard():
         stdscr.addstr(begin_y + 2, 23, self.questionSet.responses[selection-1])
         stdscr.refresh()
 
-    def verifyResponse(self, stdscr, gamestats):
+    def verifyResponse(self, stdscr, gamestats): #change color and determine if choice is correct
         self.instantSelectionRedraw(stdscr, int(self.selectedResponse))
         if self.selectedResponse == str(self.questionSet.correct):
             stdscr.attron(self.correct) #add sigma point here
@@ -68,7 +68,7 @@ class QuestionBoard():
         time.sleep(1)
         stdscr.move(0, 0)
 
-    def transition(self, stdscr):
+    def transition(self, stdscr): #standard fade
         for i in range(30):
             stdscr.addstr(i, 0, str("#" * 119))
             stdscr.refresh()
@@ -91,16 +91,16 @@ class QuestionBoard():
         rectangle(stdscr, 1, 4, 5, 114)
         self.gradual_print(3, 8, self.questionSet.question, stdscr)
 
-        for i in range(4):
-            begin_y = self.start + ((i + 1) * self.separation_distance)
-            end_y = 4 + begin_y
+        for i in range(4): #making the question board dynamically resize was a good idea in theory, horrible in practive
+            begin_y = self.start + ((i + 1) * self.separation_distance) #where the questions should begin on y
+            end_y = 4 + begin_y # number signifies how tall the questions should be
             rectangle(stdscr, begin_y, 4, end_y, 14)
             stdscr.addstr(2 + begin_y, 9, str(i+1) + ".")
             rectangle(stdscr, begin_y, 19, end_y, 114)
             self.gradual_print(begin_y + 2, 23, self.questionSet.responses[i], stdscr)
     
-    def print_big_text(self, stdscr, y, x, text):
-        elem = []
+    def print_big_text(self, stdscr, y, x, text): #get the big ascii text and print it
+        elem = [] #curses doesn't support coordinate multiline text naturally, so this is a hack fix
         for i in text:
             elem.append(i)
         splits = text.split("\n")
