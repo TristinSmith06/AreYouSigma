@@ -3,6 +3,19 @@ from questionSet import *
 from gamestats import *
 import random
 
+
+def opening(stdscr, board):
+    stdscr.addstr(0, 0, str("#" * 119))
+    stdscr.addstr(29, 0, str("#" * 119))
+    board.print_big_text(stdscr, 3, 32, open_text_one)
+    board.print_big_text(stdscr, 12, 36, open_text_two)
+    rectangle(stdscr, 24, 29, 26, 89)
+    stdscr.addstr(25, 35, "1. Play")
+    stdscr.addstr(25, 60, "2. Play Without Tutorial")
+    board.awaitResponse(stdscr)
+    board.transition(stdscr)
+
+
 def gameLoop(stdscr, board, questions, gamestats):
     testQuestion = QuestionSet("Who is the most Skibidi?", "CaseOh", "Kai Cenat", "Baby Gronk", "The Jonkler", 2)
 
@@ -36,12 +49,20 @@ def main(stdscr):
     questions = Questions()
     board = QuestionBoard(stdscr)
     gamestats = Gamestats()
+    
+    music = mixer.music.load('sounds/bgTheme.ogg')
+    mixer.music.set_volume(0.25)
+    mixer.music.play(-1)
+
+    opening(stdscr, board)
+
 
     #question game loop
     while not gamestats.isGameOver():
         gameLoop(stdscr, board, questions, gamestats)
 
 
+    mixer.music.stop()
     stdscr.getch()
 
 

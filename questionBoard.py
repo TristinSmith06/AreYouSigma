@@ -4,6 +4,10 @@ from curses import wrapper
 from curses.textpad import rectangle
 import time
 
+from playsound import *
+
+from pygame import mixer
+
 from asciiManager import *
 
 class QuestionBoard():
@@ -22,16 +26,17 @@ class QuestionBoard():
 
         self.separation_distance = 5 #numbers to specify layout of the question board y coordinate
         self.start = 2
+        mixer.init()
 
     def assignQuestionSet(self, qs): #aggregation of questionset class
         self.questionSet = qs
 
-    def gradual_print(self, y, x, text, stdscr): #print text over time with delay
+    def gradual_print(self, y, x, text, stdscr, delay = 0.02): #print text over time with delay
         index = 0
         for i in text:
             stdscr.addstr(y, x + index, i)
             index += 1
-            time.sleep(0.02)
+            time.sleep(delay)
             stdscr.refresh()
     
     def awaitResponse(self, stdscr):
@@ -40,8 +45,10 @@ class QuestionBoard():
 
         while self.selectedResponse not in ["1", "2", "3", "4"]: #ignore keys that aren't 1234 for input
             self.selectedResponse = stdscr.getkey()
+        mixer.Sound.play(mixer.Sound("sounds/select.mp3"))
     
-    def instantSelectionRedraw(self, stdscr, selection): #show only question and selected answer
+    def instantSelectionRedraw(self, stdscr, selection, wait = 0): #show only question and selected answer
+        time.sleep(wait)
         stdscr.clear()
         rectangle(stdscr, 1, 4, 5, 114)
         stdscr.addstr(3, 8, self.questionSet.question)
@@ -57,14 +64,23 @@ class QuestionBoard():
 
     def verifyResponse(self, stdscr, gamestats): #change color and determine if choice is correct
         self.instantSelectionRedraw(stdscr, int(self.selectedResponse))
+        time.sleep(0.2) #breathing room between slection and drumroll
+        mixer.Sound.play(mixer.Sound("sounds/drumroll.mp3"))
         if self.selectedResponse == str(self.questionSet.correct):
             stdscr.attron(self.correct) #add sigma point here
             gamestats.addPoint(0)
+
+            '''Very much a hack fix because thr redraw function only changes the color, it doesnt have any specification for being correct
+            or not, so a delay was added to sync up the color redraw and the sound instead of trying to pass in a parameter'''
+            self.instantSelectionRedraw(stdscr, int(self.selectedResponse), 1.2)
+            mixer.Sound.play(mixer.Sound("sounds/correct.mp3"))
         else:
             stdscr.attron(self.incorrect) #add unc point here
             gamestats.addPoint(1)
-        time.sleep(2)
-        self.instantSelectionRedraw(stdscr, int(self.selectedResponse))
+            self.instantSelectionRedraw(stdscr, int(self.selectedResponse), 1.2)
+            mixer.Sound.play(mixer.Sound("sounds/incorrect.mp3"))
+        # time.sleep(2)
+        # self.instantSelectionRedraw(stdscr, int(self.selectedResponse))
         time.sleep(1)
         stdscr.move(0, 0)
 
