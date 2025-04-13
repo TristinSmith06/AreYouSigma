@@ -39,11 +39,11 @@ class QuestionBoard():
             time.sleep(delay)
             stdscr.refresh()
     
-    def awaitResponse(self, stdscr):
+    def awaitResponse(self, stdscr, options):
         curses.flushinp() #prevent buffering input
         self.selectedResponse = None
 
-        while self.selectedResponse not in ["1", "2", "3", "4"]: #ignore keys that aren't 1234 for input
+        while self.selectedResponse not in options: #ignore keys that aren't 1234 for input
             self.selectedResponse = stdscr.getkey()
         mixer.Sound.play(mixer.Sound("sounds/select.mp3"))
     
