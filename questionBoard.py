@@ -4,7 +4,6 @@ from curses import wrapper
 from curses.textpad import rectangle
 import time
 
-from playsound import *
 
 from pygame import mixer
 

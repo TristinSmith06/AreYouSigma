@@ -114,7 +114,7 @@ open_text_two = '''
 ╚══════╝╚═╝ ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝  ╚═╝   '''
 
 
-asciiNumbers = [zero, one, two, three, four, five, six, seven, eight, nine]
+asciiNumbers = [zero, one, two, three, four, five, six, seven, eight, nine] #easier to request numbers through a list's index
 
 win = '''
 ██╗   ██╗ ██████╗ ██╗   ██╗    ██╗    ██╗██╗███╗   ██╗██╗

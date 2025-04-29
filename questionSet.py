@@ -1,11 +1,10 @@
 import csv
 
-class QuestionSet():
+class QuestionSet(): #store question, the possible responses, and an index for which response is correct
     def __init__(self, question, r1, r2, r3, r4, correct):
         self.question = question
         self.responses = [r1, r2, r3, r4]
         self.correct = correct
-
 
 class Questions():
     def __init__(self):

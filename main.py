@@ -4,6 +4,7 @@ from gamestats import *
 import random
 
 
+
 def opening(stdscr, board):
     stdscr.addstr(0, 0, str("#" * 119))
     stdscr.addstr(29, 0, str("#" * 119))
@@ -68,8 +69,6 @@ def gameLoop(stdscr, board, questions, gamestats):
     time.sleep(2.3)
     board.transition(stdscr)
     stdscr.attron(board.default)
-
-
 
 
 def main(stdscr):
