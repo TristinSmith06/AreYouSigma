@@ -47,12 +47,14 @@ class AreYouSigma():
         board.transition(stdscr)
 
     def endSreen(self, stdscr, board, gamestats):
-        stdscr.addstr(0, 0, str("#" * 119))
-        stdscr.addstr(29, 0, str("#" * 119))
         if gamestats.didPlayerWin():
+            stdscr.attron(self.board.correct)
             board.print_big_text(stdscr, 10, 30, win)
         else:
+            stdscr.attron(self.board.incorrect)
             board.print_big_text(stdscr, 10, 25, lose)
+        stdscr.addstr(0, 0, str("#" * 119))
+        stdscr.addstr(29, 0, str("#" * 119))
         
         gamestats.sigma_points = 0
         gamestats.unc_points = 0
@@ -71,6 +73,8 @@ class AreYouSigma():
         choice = random.randint(0, len(questions.questions_list) - 1)
         board.assignQuestionSet(questions.questions_list[choice])
         questions.questions_list.pop(choice)
+
+        stdscr.attron(board.default)
 
         board.displayQuestionSet(stdscr)
 
