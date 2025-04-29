@@ -26,8 +26,8 @@ class AreYouSigma():
         board.print_big_text(stdscr, 3, 32, open_text_one)
         board.print_big_text(stdscr, 12, 36, open_text_two)
         rectangle(stdscr, 24, 29, 26, 89)
-        stdscr.addstr(25, 35, "1. Play")
-        stdscr.addstr(25, 60, "2. Play Without Tutorial")
+        stdscr.addstr(25, 32, "Play [Press 1]")
+        stdscr.addstr(25, 55, "Play Without Tutorial [Press 2]")
         board.awaitResponse(stdscr, ["1", "2"])
         board.transition(stdscr)
         if board.selectedResponse == "1":
@@ -41,8 +41,8 @@ class AreYouSigma():
         board.gradual_print(10, 4, "Get 15 Sigma Points to win", stdscr)
         board.gradual_print(12, 4, "If you get 5 Unc Points; however, you lose", stdscr)
         board.gradual_print(14, 4, "We are not responsible for any brainrot you experience while playing", stdscr)
-        rectangle(stdscr, 17, 4, 19, 24)
-        board.gradual_print(18, 6, "Continue [Press 1]", stdscr)
+        rectangle(stdscr, 17, 4, 19, 25)
+        stdscr.addstr(18, 6, "Continue [Press 1]")
         board.awaitResponse(stdscr, ["1"])
         board.transition(stdscr)
 
@@ -58,8 +58,8 @@ class AreYouSigma():
         gamestats.unc_points = 0
 
         rectangle(stdscr, 24, 29, 26, 89)
-        stdscr.addstr(25, 35, "1. Play Again")
-        stdscr.addstr(25, 71, "2. Exit Game")
+        stdscr.addstr(25, 33, "Play Again [Press 1]")
+        stdscr.addstr(25, 72, "Quit [Press 2]")
         board.awaitResponse(stdscr, ["1", "2"])
         board.transition(stdscr)
         if board.selectedResponse == "2":
@@ -86,7 +86,6 @@ class AreYouSigma():
 
 def main(stdscr):
     ays = AreYouSigma(stdscr)
-
     while True:
     #question game loop
         questions = Questions()
